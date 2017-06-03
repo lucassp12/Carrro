@@ -9,6 +9,11 @@ import javax.swing.JOptionPane;
 import revenda.Car;
 import revenda.CarDAO;
 
+import java.awt.Component;
+import java.lang.reflect.Field;
+
+import javax.swing.*;
+
 /**
  *
  * @author Lucas
@@ -41,25 +46,6 @@ public class jifcadastro extends javax.swing.JInternalFrame {
         initComponents();
     }
 
-    private void preencheEditFormCar() {
-        this.inputNome.setText(this.editCar.getNome());
-        this.inputRenavam.setText(this.editCar.getRenavam());
-        this.checkAirBag.setSelected(this.editCar.airBagInt() == 1);
-        this.checkArCondicionado.setSelected(this.editCar.arCondicionadoInt() == 1);
-        this.checkCdPlayer.setSelected(this.editCar.cdPlayerInt() == 1);
-        this.checkDirecaoHidraulica.setSelected(this.editCar.direcaoHidraulicaInt() == 1);
-        this.checkVidroEletrico.setSelected(this.editCar.vidroEletricoInt() == 1);
-        this.checkTravaEletrica.setSelected(this.editCar.travaEletricaInt() == 1);
-        this.checkCambioAutomatico.setSelected(this.editCar.cambioAutomaticoInt() == 1);
-        this.checkAlarme.setSelected(this.editCar.AlarmeInt() == 1);
-        this.checkZeroKm.setSelected(this.editCar.zeroKmInt() == 1);
-        this.checkDesembacadorTraseiro.setSelected(this.editCar.desembacadorTraseiroInt() == 1);
-        this.checkRodasLiga.setSelected(this.editCar.rodasLigaInt() == 1);
-     
-        
-        
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -85,7 +71,7 @@ public class jifcadastro extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         labelNome = new javax.swing.JLabel();
-        inputNome = new javax.swing.JTextField();
+        inputNome = new JTextField();
         jLabel1 = new javax.swing.JLabel();
         inputAnoModelo = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
@@ -93,11 +79,11 @@ public class jifcadastro extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         inputCombustivel = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
-        inputPlaca = new javax.swing.JTextField();
+        inputPlaca = new JTextField();
         jLabel7 = new javax.swing.JLabel();
-        inputMarca = new javax.swing.JTextField();
+        inputMarca = new JTextField();
         jLabel8 = new javax.swing.JLabel();
-        inputModelo = new javax.swing.JTextField();
+        inputModelo = new JTextField();
         jLabel9 = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
         checkArCondicionado = new javax.swing.JCheckBox();
@@ -113,19 +99,19 @@ public class jifcadastro extends javax.swing.JInternalFrame {
         checkRodasLiga = new javax.swing.JCheckBox();
         jSeparator5 = new javax.swing.JSeparator();
         jLabel10 = new javax.swing.JLabel();
-        inputKilometragem = new javax.swing.JTextField();
+        inputKilometragem = new JTextField();
         jLabel11 = new javax.swing.JLabel();
-        inputCor = new javax.swing.JTextField();
+        inputCor = new JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jSeparator6 = new javax.swing.JSeparator();
         labelRenavam = new javax.swing.JLabel();
-        inputRenavam = new javax.swing.JTextField();
+        inputRenavam = new JTextField();
         dateDataFabricacao = new com.toedter.calendar.JDateChooser();
         jButton1 = new javax.swing.JButton();
-        inputPrecoVenda = new javax.swing.JTextField();
-        inputPrecoCompra = new javax.swing.JTextField();
+        inputPrecoVenda = new JTextField();
+        inputPrecoCompra = new JTextField();
 
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
@@ -502,9 +488,9 @@ public class jifcadastro extends javax.swing.JInternalFrame {
     private void inputPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputPlacaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_inputPlacaActionPerformed
-
-    private void btnCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroActionPerformed
-        Car c = new Car();
+    
+    private Car getFormCar() {
+    	Car c = new Car();
         c.setNome(inputNome.getText());
         c.setRenavam(inputRenavam.getText());
         c.setAnoModelo(Integer.parseInt(inputAnoModelo.getSelectedItem().toString()));
@@ -529,6 +515,39 @@ public class jifcadastro extends javax.swing.JInternalFrame {
         c.setPrecoVenda(Float.parseFloat(inputPrecoVenda.getText()));
         c.setDataFabricacao(dateDataFabricacao.getDate());
         
+        return c;
+    }
+    
+    private void preencheEditFormCar() {
+        this.inputNome.setText(this.editCar.getNome());
+        this.inputRenavam.setText(this.editCar.getRenavam());
+        this.checkAirBag.setSelected(this.editCar.airBagInt() == 1);
+        this.checkArCondicionado.setSelected(this.editCar.arCondicionadoInt() == 1);
+        this.checkCdPlayer.setSelected(this.editCar.cdPlayerInt() == 1);
+        this.checkDirecaoHidraulica.setSelected(this.editCar.direcaoHidraulicaInt() == 1);
+        this.checkVidroEletrico.setSelected(this.editCar.vidroEletricoInt() == 1);
+        this.checkTravaEletrica.setSelected(this.editCar.travaEletricaInt() == 1);
+        this.checkCambioAutomatico.setSelected(this.editCar.cambioAutomaticoInt() == 1);
+        this.checkAlarme.setSelected(this.editCar.AlarmeInt() == 1);
+        this.checkZeroKm.setSelected(this.editCar.zeroKmInt() == 1);
+        this.checkDesembacadorTraseiro.setSelected(this.editCar.desembacadorTraseiroInt() == 1);
+        this.checkRodasLiga.setSelected(this.editCar.rodasLigaInt() == 1);
+    }
+    
+    private boolean validateCar(Car c) {    	
+    	if(c.getNome().trim().length() == 0) {
+    		//mensagem de erro
+    		return false;
+    	}
+    }
+
+    private void btnCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroActionPerformed
+    	Car c = this.getFormCar();
+    	
+    	if(this.validateCar(c) == false){
+    		return;
+    	}
+        
         if(this.editCar != null) {
             if (CarDAO.editCar(this.editCar.getId(), c)) {
                 JOptionPane.showMessageDialog(jPanel1, "Cadastro Efetuado com Sucesso!");
@@ -550,10 +569,6 @@ public class jifcadastro extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_inputAnoModeloActionPerformed
 
-    public void getForm() {
-
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cancelar;
     private javax.swing.JButton btnCadastro;
@@ -574,15 +589,15 @@ public class jifcadastro extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> inputAnoFabricacao;
     private javax.swing.JComboBox<String> inputAnoModelo;
     private javax.swing.JComboBox<String> inputCombustivel;
-    private javax.swing.JTextField inputCor;
-    private javax.swing.JTextField inputKilometragem;
-    private javax.swing.JTextField inputMarca;
-    private javax.swing.JTextField inputModelo;
-    private javax.swing.JTextField inputNome;
-    private javax.swing.JTextField inputPlaca;
-    private javax.swing.JTextField inputPrecoCompra;
-    private javax.swing.JTextField inputPrecoVenda;
-    private javax.swing.JTextField inputRenavam;
+    private JTextField inputCor;
+    private JTextField inputKilometragem;
+    private JTextField inputMarca;
+    private JTextField inputModelo;
+    private JTextField inputNome;
+    private JTextField inputPlaca;
+    private JTextField inputPrecoCompra;
+    private JTextField inputPrecoVenda;
+    private JTextField inputRenavam;
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
