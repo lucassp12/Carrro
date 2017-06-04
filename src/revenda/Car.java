@@ -6,6 +6,8 @@
 package revenda;
 
 import java.lang.reflect.Field;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -299,6 +301,27 @@ public class Car {
 
     public void setPrecoVenda(float preco_venda) {
         this.preco_venda = preco_venda;
+    }
+    
+    public void fillWithResultSet(ResultSet rs) throws SQLException {
+        this.setId(rs.getInt("id"));
+        this.setNome(rs.getString("nome"));
+        this.setRenavam(rs.getString("renavam"));
+        this.setAirBag(rs.getBoolean("air_bag"));
+        this.setArCondicionado(rs.getBoolean("ar_cond"));
+        this.setCdPlayer(rs.getBoolean("cd_player"));
+        this.setDirecaoHidraulica(rs.getBoolean("direcao_hidraulica"));
+        this.setVidroEletrico(rs.getBoolean("vidro_eletrico"));
+        this.setTravaEletrica(rs.getBoolean("trava_eletrica"));
+        this.setCambioAutomatico(rs.getBoolean("cambio_automatico"));
+        this.setAlarme(rs.getBoolean("alarme"));
+        this.setZeroKm(rs.getBoolean("zero_km"));
+        this.setDesembacadorTraseiro(rs.getBoolean("desembacador_traseiro"));
+        this.setRodasLiga(rs.getBoolean("rodas_liga"));
+        this.setKm(Integer.parseInt(rs.getString("km")));
+        this.setCor(rs.getString("cor"));
+        this.setPrecoCompra(rs.getFloat("preco_compra"));
+        this.setPrecoVenda(rs.getFloat("preco_venda"));
     }
 
     public String debug() {

@@ -34,25 +34,7 @@ public class CarDAO {
 
             while (rs.next()) {
                 carro = new Car();
-                carro.setId(rs.getInt("id"));
-                carro.setNome(rs.getString("nome"));
-                carro.setRenavam(rs.getString("renavam"));
-                carro.setAirBag(rs.getBoolean("air_bag"));
-                carro.setArCondicionado(rs.getBoolean("ar_cond"));
-                carro.setCdPlayer(rs.getBoolean("cd_player"));
-                carro.setDirecaoHidraulica(rs.getBoolean("direcao_hidraulica"));
-                carro.setVidroEletrico(rs.getBoolean("vidro_eletrico"));
-                carro.setTravaEletrica(rs.getBoolean("trava_eletrica"));
-                carro.setCambioAutomatico(rs.getBoolean("cambio_automatico"));
-                carro.setAlarme(rs.getBoolean("alarme"));
-                carro.setZeroKm(rs.getBoolean("zero_km"));
-                carro.setDesembacadorTraseiro(rs.getBoolean("desembacador_traseiro"));
-                carro.setRodasLiga(rs.getBoolean("rodas_liga"));
-                carro.setKm(Integer.parseInt(rs.getString("km")));
-                carro.setCor(rs.getString("cor"));
-                carro.setPrecoCompra(rs.getFloat("preco_compra"));
-                carro.setPrecoVenda(rs.getFloat("preco_venda"));
-
+                carro.fillWithResultSet(rs);
             }
         } catch (SQLException ex) {
             Logger.getLogger(CarDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -61,7 +43,6 @@ public class CarDAO {
         }
 
         return carro;
-
     }
 
     public static boolean insertCar(Car c) {
@@ -100,8 +81,6 @@ public class CarDAO {
                 + "\"" + c.getPrecoVenda() + "\""
                 + ")";
 
-        System.out.println(query);
-        // create a Statement from the connection
         Statement statement;
         try {
             statement = DbConnector.getConnection().createStatement();
@@ -123,15 +102,12 @@ public class CarDAO {
         List<Car> list = new ArrayList<>();
 
         try {
-
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM car");
 
             while (rs.next()) {
-                Car carro = new Car();
-                carro.setId(rs.getInt("id"));
-                carro.setNome(rs.getString("nome"));
-                carro.setRenavam(rs.getString("renavam"));
+            	Car carro = new Car();
+                carro.fillWithResultSet(rs);
                 list.add(carro);
             }
         } catch (SQLException ex) {
@@ -167,7 +143,7 @@ public class CarDAO {
         return true;
     }
 
-    public void deleteCar(Car c) {
+    public boolean deleteCar(Car c) {
         DbConnector.connect();
         Connection conn = DbConnector.getConnection();
         PreparedStatement stmt = null;
@@ -175,16 +151,14 @@ public class CarDAO {
         try {
             stmt = conn.prepareStatement("DELETE FROM car WHERE id = ?");
             stmt.setInt(1, c.getId());
-
             stmt.executeUpdate();
-
-            JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao excluir: " + ex);
+            return false;
         } finally {
             DbConnector.disconnect();
         }
-
+        
+        return true;
     }
 
 }
