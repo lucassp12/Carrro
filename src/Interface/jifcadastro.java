@@ -10,9 +10,13 @@ import revenda.Car;
 import revenda.CarDAO;
 
 import java.awt.Component;
+import java.beans.PropertyVetoException;
 import java.lang.reflect.Field;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.*;
+import revenda.Moeda;
 
 /**
  *
@@ -30,6 +34,8 @@ public class jifcadastro extends javax.swing.JInternalFrame {
         this.init();
         this.editCar = c;
         this.preencheEditFormCar();
+        this.BtnExcluir.setEnabled(true);
+
     }
 
     public jifcadastro() {
@@ -71,7 +77,7 @@ public class jifcadastro extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         labelNome = new javax.swing.JLabel();
-        inputNome = new JTextField();
+        inputNome = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         inputAnoModelo = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
@@ -79,11 +85,11 @@ public class jifcadastro extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         inputCombustivel = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
-        inputPlaca = new JTextField();
+        inputPlaca = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        inputMarca = new JTextField();
+        inputMarca = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        inputModelo = new JTextField();
+        inputModelo = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
         checkArCondicionado = new javax.swing.JCheckBox();
@@ -99,19 +105,19 @@ public class jifcadastro extends javax.swing.JInternalFrame {
         checkRodasLiga = new javax.swing.JCheckBox();
         jSeparator5 = new javax.swing.JSeparator();
         jLabel10 = new javax.swing.JLabel();
-        inputKilometragem = new JTextField();
+        inputKilometragem = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        inputCor = new JTextField();
+        inputCor = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jSeparator6 = new javax.swing.JSeparator();
         labelRenavam = new javax.swing.JLabel();
-        inputRenavam = new JTextField();
+        inputRenavam = new javax.swing.JTextField();
         dateDataFabricacao = new com.toedter.calendar.JDateChooser();
-        jButton1 = new javax.swing.JButton();
-        inputPrecoVenda = new JTextField();
-        inputPrecoCompra = new JTextField();
+        BtnExcluir = new javax.swing.JButton();
+        inputPrecoCompra = new javax.swing.JFormattedTextField();
+        inputPrecoVenda = new javax.swing.JFormattedTextField();
 
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
@@ -246,6 +252,8 @@ public class jifcadastro extends javax.swing.JInternalFrame {
 
         jLabel10.setText("KM:");
 
+        inputKilometragem.setText("0");
+
         jLabel11.setText("Cor:");
 
         jLabel12.setText("Data de Fabricação:");
@@ -256,8 +264,40 @@ public class jifcadastro extends javax.swing.JInternalFrame {
 
         labelRenavam.setText("Renavam:");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Interface/delete-32.png"))); // NOI18N
-        jButton1.setText("Excluir");
+        BtnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Interface/delete-32.png"))); // NOI18N
+        BtnExcluir.setText("Excluir");
+        BtnExcluir.setEnabled(false);
+        BtnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnExcluirActionPerformed(evt);
+            }
+        });
+
+        inputPrecoCompra.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getCurrencyInstance())));
+        inputPrecoCompra.setText("0,00");
+        inputPrecoCompra.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                inputPrecoCompraFocusLost(evt);
+            }
+        });
+        inputPrecoCompra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputPrecoCompraActionPerformed(evt);
+            }
+        });
+
+        inputPrecoVenda.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getCurrencyInstance())));
+        inputPrecoVenda.setText("0,00");
+        inputPrecoVenda.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                inputPrecoVendaFocusLost(evt);
+            }
+        });
+        inputPrecoVenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputPrecoVendaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -330,32 +370,31 @@ public class jifcadastro extends javax.swing.JInternalFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(checkDesembacadorTraseiro)
                                         .addGap(26, 26, 26)
-                                        .addComponent(checkRodasLiga))))
+                                        .addComponent(checkRodasLiga)))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addComponent(inputKilometragem, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11)
+                            .addComponent(inputCor, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(70, 70, 70)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel10)
-                                    .addComponent(inputKilometragem, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel11)
-                                    .addComponent(inputCor, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(26, 26, 26)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(32, 32, 32))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(dateDataFabricacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(18, 18, 18)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(inputPrecoCompra))
-                                .addGap(34, 34, 34)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel14)
-                                    .addComponent(inputPrecoVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(14, 14, 14)))
+                                .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(48, 48, 48)
+                                .addComponent(jLabel13))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(dateDataFabricacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(11, 11, 11)
+                                .addComponent(inputPrecoCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel14)
+                            .addComponent(inputPrecoVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -371,7 +410,7 @@ public class jifcadastro extends javax.swing.JInternalFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(Cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(BtnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -440,17 +479,17 @@ public class jifcadastro extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(inputKilometragem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(inputCor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputPrecoVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputPrecoCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(inputPrecoCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputPrecoVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Cancelar)
-                            .addComponent(jButton1)
+                            .addComponent(BtnExcluir)
                             .addComponent(btnCadastro)))
                     .addComponent(dateDataFabricacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -488,13 +527,13 @@ public class jifcadastro extends javax.swing.JInternalFrame {
     private void inputPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputPlacaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_inputPlacaActionPerformed
-    
+
     private Car getFormCar() {
-    	Car c = new Car();
+        Car c = new Car();
         c.setNome(inputNome.getText());
         c.setRenavam(inputRenavam.getText());
-        c.setAnoModelo(Integer.parseInt(inputAnoModelo.getSelectedItem().toString()));
-        c.setAnoFabricacao(Integer.parseInt(inputAnoFabricacao.getSelectedItem().toString()));
+        c.setAnoModelo(this.parseIntSafe(inputAnoModelo.getSelectedItem().toString()));
+        c.setAnoFabricacao(this.parseIntSafe(inputAnoFabricacao.getSelectedItem().toString()));
         c.setCombustivel(inputCombustivel.getSelectedItem().toString());
         c.setPlaca(inputPlaca.getText());
         c.setMarca(inputMarca.getText());
@@ -509,15 +548,35 @@ public class jifcadastro extends javax.swing.JInternalFrame {
         c.setZeroKm(checkZeroKm.isSelected());
         c.setDesembacadorTraseiro(checkDesembacadorTraseiro.isSelected());
         c.setRodasLiga(checkRodasLiga.isSelected());
-        c.setKm(Integer.parseInt(inputKilometragem.getText()));
+        c.setKm(this.parseIntSafe(inputKilometragem.getText()));
         c.setCor(inputCor.getText());
-        c.setPrecoCompra(Float.parseFloat(inputPrecoCompra.getText()));
-        c.setPrecoVenda(Float.parseFloat(inputPrecoVenda.getText()));
+        c.setPrecoCompra(this.parseMoedaToFloat(inputPrecoCompra.getText()));
+        c.setPrecoVenda(this.parseMoedaToFloat(inputPrecoVenda.getText()));
         c.setDataFabricacao(dateDataFabricacao.getDate());
-        
+
         return c;
     }
-    
+
+    private float parseMoedaToFloat(String s) {
+        if (s.trim().length() == 0) {
+            return 0;
+        }
+
+        s = s.replaceAll("\\.", "");
+        s = s.replaceAll("\\,", ".");
+        s = s.replaceAll("[^\\.^\\d]", "");
+
+        return Float.parseFloat(s);
+    }
+
+    private int parseIntSafe(String s) {
+        if (s.trim().length() == 0) {
+            return 0;
+        } else {
+            return Integer.parseInt(s);
+        }
+    }
+
     private void preencheEditFormCar() {
         this.inputNome.setText(this.editCar.getNome());
         this.inputRenavam.setText(this.editCar.getRenavam());
@@ -532,23 +591,55 @@ public class jifcadastro extends javax.swing.JInternalFrame {
         this.checkZeroKm.setSelected(this.editCar.zeroKmInt() == 1);
         this.checkDesembacadorTraseiro.setSelected(this.editCar.desembacadorTraseiroInt() == 1);
         this.checkRodasLiga.setSelected(this.editCar.rodasLigaInt() == 1);
+        jifcadastro.setSelectedValue(inputAnoModelo, Integer.toString(this.editCar.getAnoModelo()));
+        jifcadastro.setSelectedValue(inputAnoFabricacao, Integer.toString(this.editCar.getAnoFabricacao()));
+        jifcadastro.setSelectedValue(inputCombustivel, this.editCar.getCombustivel());
+        this.inputPlaca.setText(this.editCar.getPlaca());
+        this.inputMarca.setText(this.editCar.getMarca());
+        this.inputModelo.setText(this.editCar.getModelo());
+        this.inputKilometragem.setText(Integer.toString(this.editCar.getKm()));
+        this.inputCor.setText(this.editCar.getCor());
+        this.inputPrecoCompra.setText(Moeda.mascaraDinheiro(this.editCar.getPrecoCompra(), Moeda.DINHEIRO_REAL));
+        this.inputPrecoVenda.setText(Moeda.mascaraDinheiro(this.editCar.getPrecoVenda(), Moeda.DINHEIRO_REAL));
+        this.dateDataFabricacao.setDate(this.editCar.getDataFabricacao());
+
     }
-    
-    private boolean validateCar(Car c) {    	
-    	if(c.getNome().trim().length() == 0) {
-    		//mensagem de erro
-    		return false;
-    	}
+
+    private boolean validateCar(Car c) {
+        if (c.getNome().trim().length() == 0) {
+            JOptionPane.showInternalMessageDialog(this, "Informe o nome");
+            return false;
+        } else if (c.getRenavam().trim().length() == 0) {
+            JOptionPane.showInternalMessageDialog(this, "Informe o Renavam");
+            return false;
+        } else if (c.getPlaca().trim().length() == 0) {
+            JOptionPane.showInternalMessageDialog(this, "Informe a placa");
+            return false;
+        } else if (c.getMarca().trim().length() == 0) {
+            JOptionPane.showInternalMessageDialog(this, "Informe a marca");
+            return false;
+        } else if (c.getModelo().trim().length() == 0) {
+            JOptionPane.showInternalMessageDialog(this, "Informe o modelo");
+            return false;
+        } else if (c.getCor().trim().length() == 0) {
+            JOptionPane.showInternalMessageDialog(this, "Informe a cor");
+            return false;
+        } else if (c.getDataFabricacao() == null) {
+            JOptionPane.showInternalMessageDialog(this, "Informe a Data de Fabricação");
+
+            return false;
+        }
+        return true;
     }
 
     private void btnCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroActionPerformed
-    	Car c = this.getFormCar();
-    	
-    	if(this.validateCar(c) == false){
-    		return;
-    	}
-        
-        if(this.editCar != null) {
+        Car c = this.getFormCar();
+
+        if (this.validateCar(c) == false) {
+            return;
+        }
+
+        if (this.editCar != null) {
             if (CarDAO.editCar(this.editCar.getId(), c)) {
                 JOptionPane.showMessageDialog(jPanel1, "Cadastro Efetuado com Sucesso!");
             } else {
@@ -556,7 +647,7 @@ public class jifcadastro extends javax.swing.JInternalFrame {
             }
         } else {
             if (CarDAO.insertCar(c)) {
-            JOptionPane.showMessageDialog(jPanel1, "Cadastro Efetuado com Sucesso!");
+                JOptionPane.showMessageDialog(jPanel1, "Cadastro Efetuado com Sucesso!");
 
             } else {
                 JOptionPane.showMessageDialog(jPanel1, "Ocorreu um Erro no Cadastro!");
@@ -569,7 +660,53 @@ public class jifcadastro extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_inputAnoModeloActionPerformed
 
+    private void BtnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnExcluirActionPerformed
+
+        if (CarDAO.deleteCar(this.editCar)) {
+            JOptionPane.showMessageDialog(jPanel1, "Excluido com Sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(jPanel1, "Ocorreu um Erro ao Excluir!");
+        }
+        this.dispose();
+    }//GEN-LAST:event_BtnExcluirActionPerformed
+
+    private void inputPrecoCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputPrecoCompraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputPrecoCompraActionPerformed
+
+    private void inputPrecoCompraFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inputPrecoCompraFocusLost
+        String text = inputPrecoCompra.getText();
+        text = text.replaceAll("\\D", "");
+        Float value = Float.parseFloat(inputPrecoCompra.getText());
+        String moedaValue = Moeda.mascaraDinheiro(value, Moeda.DINHEIRO_REAL);
+        inputPrecoCompra.setText(moedaValue);
+    }//GEN-LAST:event_inputPrecoCompraFocusLost
+
+    private void inputPrecoVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputPrecoVendaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputPrecoVendaActionPerformed
+
+    private void inputPrecoVendaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inputPrecoVendaFocusLost
+        String text = inputPrecoVenda.getText();
+        text = text.replaceAll("\\D", "");
+        Float value = Float.parseFloat(inputPrecoVenda.getText());
+        String moedaValue = Moeda.mascaraDinheiro(value, Moeda.DINHEIRO_REAL);
+        inputPrecoVenda.setText(moedaValue);
+    }//GEN-LAST:event_inputPrecoVendaFocusLost
+    public static void setSelectedValue(JComboBox comboBox, String value) {
+        for (int i = 0; i < comboBox.getItemCount(); i++) {
+
+            String item = (String) comboBox.getItemAt(i);
+
+            if (item.equalsIgnoreCase(value)) {
+                comboBox.setSelectedIndex(i);
+                break;
+            }
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnExcluir;
     private javax.swing.JButton Cancelar;
     private javax.swing.JButton btnCadastro;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -589,16 +726,15 @@ public class jifcadastro extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> inputAnoFabricacao;
     private javax.swing.JComboBox<String> inputAnoModelo;
     private javax.swing.JComboBox<String> inputCombustivel;
-    private JTextField inputCor;
-    private JTextField inputKilometragem;
-    private JTextField inputMarca;
-    private JTextField inputModelo;
-    private JTextField inputNome;
-    private JTextField inputPlaca;
-    private JTextField inputPrecoCompra;
-    private JTextField inputPrecoVenda;
-    private JTextField inputRenavam;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField inputCor;
+    private javax.swing.JTextField inputKilometragem;
+    private javax.swing.JTextField inputMarca;
+    private javax.swing.JTextField inputModelo;
+    private javax.swing.JTextField inputNome;
+    private javax.swing.JTextField inputPlaca;
+    private javax.swing.JFormattedTextField inputPrecoCompra;
+    private javax.swing.JFormattedTextField inputPrecoVenda;
+    private javax.swing.JTextField inputRenavam;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem3;

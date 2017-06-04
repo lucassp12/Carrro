@@ -49,10 +49,14 @@ public class Principal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PROGRAMA");
 
+        jdprincipal.setForeground(new java.awt.Color(0, 236, 16));
         jdprincipal.setToolTipText("");
         jdprincipal.setPreferredSize(new java.awt.Dimension(1366, 768));
 
+        jLabel1.setBackground(new java.awt.Color(240, 30, 14));
+        jLabel1.setForeground(new java.awt.Color(255, 34, 19));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Interface/carros_d4.png"))); // NOI18N
+        jLabel1.setFocusable(false);
 
         jdprincipal.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -150,13 +154,9 @@ public class Principal extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
+            javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {

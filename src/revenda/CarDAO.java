@@ -124,7 +124,30 @@ public class CarDAO {
         DbConnector.connect();
 
         String query = "UPDATE car SET "
-                + "nome = \"" + c.getNome() + "\""
+                + "nome = \"" + c.getNome() + "\","
+                + "renavam = \"" + c.getRenavam() + "\","
+                + "ano_modelo = \"" + c.getAnoModelo()+ "\","
+                + "ano_fabricacao = \"" + c.getAnoFabricacao()+ "\","
+                + "combustivel = \"" + c.getCombustivel()+ "\","
+                + "placa = \"" + c.getPlaca()+ "\","
+                + "marca = \"" + c.getMarca()+ "\","
+                + "modelo = \"" + c.getModelo()+ "\","
+                + "ar_cond = \"" + c.arCondicionadoInt() + "\","
+                + "air_bag = \"" + c.airBagInt() + "\","
+                + "cd_player = \"" + c.cdPlayerInt() + "\","
+                + "direcao_hidraulica = \"" + c.direcaoHidraulicaInt() + "\","
+                + "vidro_eletrico = \"" + c.vidroEletricoInt() + "\","
+                + "trava_eletrica = \"" + c.travaEletricaInt() + "\","
+                + "cambio_automatico = \"" + c.cambioAutomaticoInt() + "\","
+                + "alarme = \"" + c.AlarmeInt() + "\","
+                + "zero_km = \"" + c.zeroKmInt() + "\","
+                + "desembacador_traseiro = \"" + c.desembacadorTraseiroInt() + "\","
+                + "rodas_liga = \"" + c.rodasLigaInt() + "\","
+                + "km = \"" + c.getKm()+ "\","
+                + "cor = \"" + c.getCor()+ "\","
+                + "data_fabricacao = \"" + c.getDataFabricacaoString()+ "\","
+                + "preco_compra = \"" + c.getPrecoCompra()+ "\","
+                + "preco_venda = \"" + c.getPrecoVenda()+ "\" "
                 + "WHERE id = " + id;
 
         System.out.println(query);
@@ -143,7 +166,7 @@ public class CarDAO {
         return true;
     }
 
-    public boolean deleteCar(Car c) {
+    public static boolean deleteCar(Car c) {
         DbConnector.connect();
         Connection conn = DbConnector.getConnection();
         PreparedStatement stmt = null;

@@ -307,6 +307,12 @@ public class Car {
         this.setId(rs.getInt("id"));
         this.setNome(rs.getString("nome"));
         this.setRenavam(rs.getString("renavam"));
+        this.setAnoModelo(Integer.parseInt(rs.getString("ano_modelo")));
+        this.setAnoFabricacao(Integer.parseInt(rs.getString("ano_fabricacao")));
+        this.setPlaca(rs.getString("placa"));
+        this.setMarca(rs.getString("marca"));
+        this.setModelo(rs.getString("modelo"));
+        this.setCombustivel(rs.getString("combustivel"));
         this.setAirBag(rs.getBoolean("air_bag"));
         this.setArCondicionado(rs.getBoolean("ar_cond"));
         this.setCdPlayer(rs.getBoolean("cd_player"));
@@ -322,6 +328,7 @@ public class Car {
         this.setCor(rs.getString("cor"));
         this.setPrecoCompra(rs.getFloat("preco_compra"));
         this.setPrecoVenda(rs.getFloat("preco_venda"));
+        this.setDataFabricacao(rs.getDate("data_fabricacao"));
     }
 
     public String debug() {

@@ -8,10 +8,13 @@ import javax.swing.table.TableRowSorter;
 import revenda.CarDAO;
 import revenda.Car;
 import Interface.Principal;
+import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 
 public class Listar extends javax.swing.JInternalFrame {
-    
+
     private JDesktopPane telaP;
 
     /**
@@ -21,7 +24,7 @@ public class Listar extends javax.swing.JInternalFrame {
         initComponents();
         DefaultTableModel modelo = (DefaultTableModel) Tabela.getModel();
         Tabela.setRowSorter(new TableRowSorter(modelo));
-        
+
         this.telaP = telaP;
 
         listTabela();
@@ -113,14 +116,20 @@ public class Listar extends javax.swing.JInternalFrame {
 
     private void TabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabelaMouseClicked
         if (evt.getClickCount() > 1) {
-           String Id = Tabela.getValueAt(Tabela.getSelectedRow(), 0).toString();
-                Car c = CarDAO.getCarById(Integer.parseInt(Id));
-                
-                jifcadastro obj=new jifcadastro(c);
-                obj.setVisible(true);
-                this.telaP.add(obj);
-   
-                this.dispose();
+            String Id = Tabela.getValueAt(Tabela.getSelectedRow(), 0).toString();
+            Car c = CarDAO.getCarById(Integer.parseInt(Id));
+
+            jifcadastro obj = new jifcadastro(c);
+            obj.setVisible(true);
+            this.telaP.add(obj);
+
+            try {
+                obj.setSelected(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(jifcadastro.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            this.dispose();
         }
     }//GEN-LAST:event_TabelaMouseClicked
 
